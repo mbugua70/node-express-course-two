@@ -1,0 +1,2 @@
+// (__filename) - used to access the current working filename
+// (__dirname) - used to access the current working directory name

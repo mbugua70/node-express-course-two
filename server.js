@@ -22,19 +22,19 @@ app.get("/", (req, res) => {
 
   // rendering file using ejs
 
-  res.render("index");
+  res.render("index", { title: "Home" });
 });
 
 app.get("/about", (req, res) => {
   //   res.sendFile("./public/about.html", { root: __dirname });
   // rendering about file using ejs
-  res.render("about");
+  res.render("about", { title: "About" });
 });
 
 // redirecting in express
 
 app.get("/blog/create", (req, res) => {
-  res.render("create");
+  res.render("create", { title: "Blog" });
 });
 
 // app.get("*", (req, res) => {
@@ -44,7 +44,7 @@ app.get("/blog/create", (req, res) => {
 // another  to write the code above
 app.use((req, res) => {
   //   res.status(404).sendFile("./public/404.html", { root: __dirname });
-  res.status(404).render("404");
+  res.status(404).render("404", { title: "404" });
 });
 
 const port = process.env.PORT || 5000;

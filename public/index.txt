@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learning about sending html file to the client</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+   <h1>Backend roadmap with nodejs</h1>
+   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore ad exercitationem quas veritatis sunt voluptas molestiae, saepe quaerat sit dolor nesciunt voluptatibus inventore nam similique. Est doloremque deleniti voluptatum nostrum?</p>
+   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio culpa dolorum, saepe quae earum aperiam non iusto hic, explicabo labore, illo consequatur quibusdam tenetur atque debitis sed quas? Placeat, tenetur.</p>
+</body>
+</html>

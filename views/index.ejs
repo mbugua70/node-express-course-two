@@ -1,33 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- when outputting a single value we use, <%=   %> -->
-    <title>Blog post project | <%= title %> </title>
-</head>
+  <!-- the use partials -->
+  <%- include('../partials/head.ejs')  %>
 <body>
     <header>
         <!-- ejs code example below -->
-        <!-- <% const name = 'john' %> -->
-        <nav>
-            <div class="site-title">
-                <!-- outputting data using ejs -->
-                <!-- <%= name %> -->
-                <a href="/">
-                    <h1>Blog Post</h1>
-                </a>
-            </div>
-            <ul>
-                <li><a href="/">Blogs</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/blogs/create">New Blog</a></li>
-            </ul>
-        </nav>
+
+        <!-- we will use partial imported from a diffirent file -->
+        <%- include('../partials/nav.ejs')  %>
     </header>
     <div class="blog content">
       <h2>All Blogs</h2>
+      <% if(blogs.length > 0) { %>
+        <% blogs.forEach(blog => { %>
+            <h3 class="title"><%= blog.title %></h3>
+            <p class="snippet"><%= blog.snippet %></p>
+            <% }) %>
+        <% }else{%>
+            <p>Ooops! no blogs to display</p>
+
+            <% } %>
     </div>
+    <%- include("../partials/footer.ejs")  %>
 </body>
 </html>
 

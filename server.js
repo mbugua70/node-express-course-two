@@ -19,10 +19,12 @@
 
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
+const Blog = require("./models/blog");
+require("dotenv").config();
 
 // connect to database(mongodb)
-const dbURL =
-  "mongodb+srv://myAtlasDBUser:123455@myatlasclusteredu.kmyoknr.mongodb.net/?retryWrites=true&w=majority";
+const MONGODB_URL_STRING = process.env.MONGODB_URL_STRING;
 
 // The below code is used to configure the view engine with ejs
 app.set("view engine", "ejs");
@@ -30,6 +32,21 @@ app.set("view engine", "ejs");
 // static files using middleware
 
 app.use(express.static("public"));
+
+// connecting to the database.
+mongoose
+  .connect(MONGODB_URL_STRING)
+  .then((result) => {
+    // the below code will allow only to listen for request only when its connected to the database.
+    const port = process.env.PORT || 5000;
+
+    app.listen(port, () => {
+      console.log(`Listening to port ${port}.....`);
+    });
+  })
+  .catch((err) => {
+    console.log(`Ooops couldn't connect to the database due to Error: ${err}`);
+  });
 
 // Below code shows how we can configure ejs using different directory.
 // app.set("views", "public");
@@ -44,26 +61,32 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   //   res.sendFile("./public/index.html", { root: __dirname });
 
   // rendering file using ejs
 
-  const blogs = [
-    {
-      title: "Yoshi finds eggs",
-      snippet: "Ex ad esse ut ullamco ad voluptate laborum eiusmod",
-    },
-    {
-      title: "Ex enim sit velit",
-      snippet: "Id esse laborum aliqua deserunt dolore.",
-    },
-    {
-      title: "Do ad qui ad laboris",
-      snippet: "Enim aute voluptate qui dolore amet.",
-    },
-  ];
-  res.render("index", { title: "Home", blogs });
+  // const blogs = [
+  //   {
+  //     title: "Yoshi finds eggs",
+  //     snippet: "Ex ad esse ut ullamco ad voluptate laborum eiusmod",
+  //   },
+  //   {
+  //     title: "Ex enim sit velit",
+  //     snippet: "Id esse laborum aliqua deserunt dolore.",
+  //   },
+  //   {
+  //     title: "Do ad qui ad laboris",
+  //     snippet: "Enim aute voluptate qui dolore amet.",
+  //   },
+  // ];
+
+  // try {
+  //   const blogs = await Blog.find({});
+  //   return res.render("index", { title: "Home", blogs });
+  // } catch (err) {}
+
+  res.redirect("/blogs");
 });
 
 app.get("/about", (req, res) => {
@@ -73,10 +96,62 @@ app.get("/about", (req, res) => {
 });
 
 // redirecting in express
+// blogs
+
+app.get("/blogs", async (req, res) => {
+  try {
+    const blogs = await Blog.find({}).sort({ createdAt: -1 });
+    return res.render("index", { title: "All Blogs", blogs });
+  } catch (err) {}
+});
 
 app.get("/blogs/create", (req, res) => {
-  res.render("create", { title: "Blog" });
+  return res.render("create", { title: "Blog" });
 });
+
+//sample of mongoose and mongoDB data post
+
+// app.get("/add-blog", async (req, res) => {
+//   const blog = new Blog({
+//     title: " new Blog 3",
+//     snippet: " about the new blog",
+//     body: "Sint velit aliquip mollit et aliqua eiusmod reprehenderit commodo nostrud tempor.",
+//   });
+
+//   try {
+//     const result = await blog.save();
+//     return res.status(200).json({ success: true, data: result });
+//   } catch (err) {
+//     return res
+//       .status(500)
+//       .json({ success: false, msg: `Ooops an Error occurred, Error: ${err}` });
+//   }
+// });
+
+// getting all blogs
+
+// app.get("/all-blogs", async (req, res) => {
+//   try {
+//     const allBlogs = await Blog.find({});
+//     return res.status(200).json({ success: true, data: allBlogs });
+//   } catch (err) {
+//     return res
+//       .status(500)
+//       .json({ success: false, msg: `An Error occured, Error: ${err}` });
+//   }
+// });
+
+// app.get("/single-blog/:id", async (req, res) => {
+//   try {
+//     const paramsId = req.params.id;
+//     const singleBlog = await Blog.findOne({ _id: paramsId });
+//     return res.status(200).json({ success: true, data: singleBlog });
+//   } catch (err) {
+//     return res
+//       .status(500)
+//       .json({ success: false, msg: `An Error Occurred, Error: ${err}` });
+//   }
+// });
 
 // app.get("*", (req, res) => {
 //   res.sendFile("./public/404.html", { root: __dirname });
@@ -88,11 +163,7 @@ app.use((req, res) => {
   res.status(404).render("404", { title: "404" });
 });
 
-const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-  console.log(`Listening to port ${port}.....`);
-});
 
 // NOTES:
 // 3rd Party Middleware

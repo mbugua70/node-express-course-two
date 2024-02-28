@@ -105,6 +105,7 @@ app.get("/blogs/create", (req, res) => {
   res.render("create", { title: "Create a new blog" });
 });
 
+
 app.get("/blogs", async (req, res) => {
   try {
     const blogs = await Blog.find({}).sort({ createdAt: -1 });
@@ -112,6 +113,45 @@ app.get("/blogs", async (req, res) => {
   } catch (err) {}
 });
 
+
+// post request
+
+app.post('/blogs',async (req,res) => {
+  // console.log(req.body);
+
+  try{
+    const blog = new Blog(req.body);
+    const result = await blog.save()
+  res.redirect('/blogs')
+  }catch(err){
+    console.log(err)
+  }
+})
+
+
+// blog details
+// single blog
+
+app.get('/blogs/:id', async (req, res) => {
+  try{
+    const paramsID = req.params.id;
+    const result = await Blog.findById(paramsID)
+    res.render('details', {blog: result, title: ""})
+  }catch(err){
+    console.log(err)
+  }
+})
+
+app.delete('/blogs/:id', async (req, res) => {
+  const paramsID = req.params.id;
+  try{
+    const result = await Blog.findByIdAndDelete(paramsID);
+    // console.log(result)
+    res.status(200).json({redirect: '/blogs'})
+  }catch(err){
+    console.log(err);
+  }
+})
 
 
 //sample of mongoose and mongoDB data post

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <!-- the use partials -->
-  <%- include('../partials/head.ejs')  %>
+  <%- include('./partials/head.ejs')  %>
 <body>
     <header>
         <!-- ejs code example below -->
 
         <!-- we will use partial imported from a diffirent file -->
-        <%- include('../partials/nav.ejs')  %>
+        <%- include('./partials/nav.ejs')  %>
     </header>
     <div class="blog content">
       <h2>All Blogs</h2>
@@ -21,7 +21,7 @@
 
             <% } %>
     </div>
-    <%- include("../partials/footer.ejs")  %>
+    <%- include("./partials/footer.ejs")  %>
 </body>
 </html>
 

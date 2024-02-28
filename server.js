@@ -18,10 +18,11 @@
 //    --- EJS
 
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
 const Blog = require("./models/blog");
 require("dotenv").config();
+
+const app = express();
 
 // connect to database(mongodb)
 const MONGODB_URL_STRING = process.env.MONGODB_URL_STRING;
@@ -32,6 +33,7 @@ app.set("view engine", "ejs");
 // static files using middleware
 
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 // connecting to the database.
 mongoose
@@ -58,6 +60,7 @@ app.use((req, res, next) => {
   console.log(req.hostname);
   console.log(req.path);
   console.log(req.method);
+  res.locals.path = req.path;
   next();
 });
 
@@ -97,17 +100,19 @@ app.get("/about", (req, res) => {
 
 // redirecting in express
 // blogs
+// blog routes
+app.get("/blogs/create", (req, res) => {
+  res.render("create", { title: "Create a new blog" });
+});
 
 app.get("/blogs", async (req, res) => {
   try {
     const blogs = await Blog.find({}).sort({ createdAt: -1 });
-    return res.render("index", { title: "All Blogs", blogs });
+    res.render("index", { title: "All Blogs", blogs });
   } catch (err) {}
 });
 
-app.get("/blogs/create", (req, res) => {
-  return res.render("create", { title: "Blog" });
-});
+
 
 //sample of mongoose and mongoDB data post
 

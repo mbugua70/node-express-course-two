@@ -29,7 +29,7 @@ const blog_single = async (req, res) => {
     const result = await Blog.findById(paramsID);
     res.render("details", { blog: result, title: "" });
   } catch (err) {
-    console.log(err);
+    res.status(404).render("404", { title: "Blog not found" });
   }
 };
 

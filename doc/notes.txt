@@ -2,3 +2,11 @@
 // (__dirname) - used to access the current working directory name
 
 // BASIC ROUTING
+
+MVC BASICS
+It means model view controller.
+its a way of structuring our code and files
+keep the files more modular, reusable and easier to use.
+
+// controllers
+its used to form a link between model and the view
